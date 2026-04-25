@@ -13,6 +13,7 @@ function formatPhone(num) {
 
 export default function TngPage() {
   const [screen, setScreen] = useState("home"); // home | transfer | transferMoney
+  const [showPennyPopup, setShowPennyPopup] = useState(false);
   const [phoneInput, setPhoneInput] = useState("");
   const [resolvedName, setResolvedName] = useState("");
   const [amountValue, setAmountValue] = useState("");
@@ -242,11 +243,60 @@ export default function TngPage() {
               <span className={styles.navIcon}>💲</span>
               <span>GOfinance</span>
             </div>
-            <div className={styles.navItem}>
+            <div className={styles.navItem} onClick={() => setShowPennyPopup(true)} style={{ cursor: "pointer" }}>
               <span className={styles.navIcon}>📍</span>
               <span>Near Me</span>
             </div>
           </div>
+
+          {/* Penny Suspicious Activity Popup */}
+          {showPennyPopup && (
+            <div className={styles.verificationOverlay}>
+              <div className={styles.verificationCard}>
+                <div className={styles.errorIconWrap}>
+                  <svg viewBox="0 0 24 24" width="48" height="48" fill="none" stroke="#d32f2f" strokeWidth="2.5">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                  </svg>
+                </div>
+                <h2 className={styles.verificationTitle} style={{ color: "#d32f2f" }}>Suspicious Activity</h2>
+                <p className={styles.verificationDesc}>
+                  Your child, <strong>Penny</strong>, is facing a potentially suspicious transaction.
+                </p>
+                <div className={styles.verificationDetails}>
+                  <div className={styles.verificationRow}>
+                    <span className={styles.verificationLabel}>Recipient</span>
+                    <span className={styles.verificationValue}>Unknown Caller</span>
+                  </div>
+                  <div className={styles.verificationRow}>
+                    <span className={styles.verificationLabel}>Amount</span>
+                    <span className={styles.verificationValue}>RM 1,200.00</span>
+                  </div>
+                </div>
+                <p className={styles.verificationNote} style={{ marginBottom: "16px" }}>
+                  Do you want to block this action to protect their account from potential fraud?
+                </p>
+                <div style={{ display: 'flex', gap: '12px' }}>
+                  <button
+                    className={styles.verificationDismissBtn}
+                    style={{ flex: 1 }}
+                    onClick={() => setShowPennyPopup(false)}
+                  >
+                    Ignore
+                  </button>
+                  <button
+                    className={styles.successDismissBtn}
+                    style={{ flex: 1, backgroundColor: '#d32f2f' }}
+                    onClick={() => {
+                      setShowPennyPopup(false);
+                      // In a real app we'd dispatch an API to block here
+                    }}
+                  >
+                    Block
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
         </div>
       </>
     );
@@ -538,7 +588,7 @@ export default function TngPage() {
                       // Simulate brief delay then show success
                       setTimeout(() => {
                         setTxStatus("SUCCESS");
-                      }, 1200);
+                      }, 5000);
                     } else if (result.status === "AI_CALL_TRIGGERED") {
                       console.log("[TNG] AI Call triggered. Risk score:", result.score1);
                       // Also trigger the AI verification call
