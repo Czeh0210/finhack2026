@@ -3,7 +3,20 @@ export default async function handler(req, res) {
     return res.status(405).json({ message: 'Method not allowed' });
   }
 
-  const { phoneNumber } = req.body;
+  const { phoneNumber, txId, status, score1 } = req.body;
+
+  console.log("[trigger_call] Received:", { txId, status, score1, phoneNumber });
+
+  // Only proceed if the transaction status is AI_CALL_TRIGGERED
+  if (status !== "AI_CALL_TRIGGERED") {
+    console.log("[trigger_call] Skipped — status is not AI_CALL_TRIGGERED:", status);
+    return res.status(200).json({
+      message: "Call not triggered — transaction is safe",
+      status,
+    });
+  }
+
+  console.log("[trigger_call] Status is AI_CALL_TRIGGERED, initiating AI verification call...");
 
   try {
     const response = await fetch(
@@ -18,9 +31,6 @@ export default async function handler(req, res) {
           agent_id: process.env.ELEVENLABS_AGENT_ID,
           to_number: phoneNumber || "+60103604883",
           agent_phone_number_id: "phnum_9101kq2jqavdfhstxn069gz50s43"
-
-
-
         }),
       }
     );
@@ -31,8 +41,11 @@ export default async function handler(req, res) {
       throw new Error(data.detail?.message || 'Failed to trigger call');
     }
 
-    return res.status(200).json(data);
+    console.log("[trigger_call] AI call dispatched successfully:", data);
+
+    return res.status(200).json({ ...data, txId, score1 });
   } catch (error) {
+    console.error("[trigger_call] Failed:", error.message);
     return res.status(500).json({ error: error.message });
   }
 }

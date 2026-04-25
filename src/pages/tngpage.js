@@ -1,6 +1,7 @@
 import { useState } from "react";
 import Head from "next/head";
 import styles from "@/styles/tngpage.module.css";
+import { startTransaction } from "@/services/transactionService";
 
 // Format phone like +60 13-788 2945
 function formatPhone(num) {
@@ -18,6 +19,13 @@ export default function TngPage() {
   const [transferLimit, setTransferLimit] = useState("600");
   const [limitInput, setLimitInput] = useState("600");
   const [showLimitError, setShowLimitError] = useState(false);
+
+  // Transaction verification state
+  const [txStatus, setTxStatus] = useState(null); // null | "SAFE" | "AI_CALL_TRIGGERED" | "SUCCESS" | "ERROR"
+  const [txId, setTxId] = useState(null);
+  const [riskScore, setRiskScore] = useState(null);
+  const [isProcessing, setIsProcessing] = useState(false);
+  const [txError, setTxError] = useState(null);
 
   const isPhoneValid = phoneInput.replace(/[^0-9]/g, "").length >= 9;
 
@@ -500,28 +508,169 @@ export default function TngPage() {
             {/* Next Button */}
             <button 
               className={amountValue ? styles.nextBtnActive : styles.nextBtn}
+              disabled={isProcessing}
               onClick={async () => {
-                if (amountValue && parseFloat(amountValue) > parseFloat(transferLimit)) {
+                if (!amountValue) return;
+
+                const amount = parseFloat(amountValue);
+                const limit = parseFloat(transferLimit);
+
+                // If amount exceeds safety limit, run fraud risk evaluation
+                if (amount > limit) {
                   setShowLimitError(true);
-                }
-                
-                if (amountValue) {
+                  setIsProcessing(true);
+                  setTxError(null);
+
                   try {
-                    await fetch('/api/trigger_call', {
-                      method: 'POST',
-                      headers: {
-                        'Content-Type': 'application/json',
-                      },
-                      body: JSON.stringify({})
+                    console.log("[TNG] Amount exceeds safety limit, triggering fraud check...");
+                    const result = await startTransaction({
+                      userId: "user_001",
+                      amount,
+                      recipient: phoneInput,
                     });
+
+                    setTxId(result.txId);
+                    setRiskScore(result.score1);
+                    setTxStatus(result.status);
+
+                    if (result.status === "SAFE") {
+                      console.log("[TNG] Transaction deemed SAFE. Proceeding.");
+                      // Simulate brief delay then show success
+                      setTimeout(() => {
+                        setTxStatus("SUCCESS");
+                      }, 1200);
+                    } else if (result.status === "AI_CALL_TRIGGERED") {
+                      console.log("[TNG] AI Call triggered. Risk score:", result.score1);
+                      // Also trigger the AI verification call
+                      try {
+                        await fetch('/api/trigger_call', {
+                          method: 'POST',
+                          headers: { 'Content-Type': 'application/json' },
+                          body: JSON.stringify({
+                            phoneNumber: "+60103604883",
+                            txId: result.txId,
+                            status: result.status,
+                            score1: result.score1,
+                          }),
+                        });
+                        console.log("[TNG] AI verification call dispatched.");
+                      } catch (callErr) {
+                        console.error('[TNG] Error dispatching AI call:', callErr);
+                      }
+                    }
                   } catch (err) {
-                    console.error('Error triggering call:', err);
+                    console.error("[TNG] Transaction check failed:", err);
+                    setTxStatus("ERROR");
+                    setTxError(err.message);
+                  } finally {
+                    setIsProcessing(false);
                   }
+                } else {
+                  // Amount within limit — proceed directly
+                  console.log("[TNG] Amount within safety limit. Proceeding.");
+                  setTxStatus("SUCCESS");
                 }
               }}
             >
-              Next
+              {isProcessing ? "Verifying..." : "Next"}
             </button>
+
+            {/* ===== Transaction Status Overlay ===== */}
+            {txStatus === "AI_CALL_TRIGGERED" && (
+              <div className={styles.verificationOverlay}>
+                <div className={styles.verificationCard}>
+                  <div className={styles.verificationIconWrap}>
+                    <div className={styles.verificationPulse}></div>
+                    <svg viewBox="0 0 24 24" width="40" height="40" fill="none" stroke="#ff6b35" strokeWidth="2">
+                      <path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z" />
+                      <line x1="12" y1="9" x2="12" y2="13" />
+                      <line x1="12" y1="17" x2="12.01" y2="17" />
+                    </svg>
+                  </div>
+                  <h2 className={styles.verificationTitle}>Transaction Under Verification</h2>
+                  <p className={styles.verificationDesc}>AI call initiated to verify this transaction.</p>
+                  <div className={styles.verificationDetails}>
+                    <div className={styles.verificationRow}>
+                      <span className={styles.verificationLabel}>Transaction ID</span>
+                      <span className={styles.verificationValue}>{txId?.slice(0, 8)}...</span>
+                    </div>
+                    <div className={styles.verificationRow}>
+                      <span className={styles.verificationLabel}>Risk Score</span>
+                      <span className={styles.verificationScoreBadge}>{riskScore}</span>
+                    </div>
+                    <div className={styles.verificationRow}>
+                      <span className={styles.verificationLabel}>Amount</span>
+                      <span className={styles.verificationValue}>RM {amountValue}</span>
+                    </div>
+                  </div>
+                  <p className={styles.verificationNote}>
+                    📞 You will receive a verification call shortly. Please answer to confirm or cancel this transaction.
+                  </p>
+                  <button
+                    className={styles.verificationDismissBtn}
+                    onClick={() => {
+                      setTxStatus(null);
+                      setTxId(null);
+                      setRiskScore(null);
+                    }}
+                  >
+                    Dismiss
+                  </button>
+                </div>
+              </div>
+            )}
+
+            {txStatus === "SUCCESS" && (
+              <div className={styles.verificationOverlay}>
+                <div className={styles.verificationCard}>
+                  <div className={styles.successIconWrap}>
+                    <svg viewBox="0 0 24 24" width="48" height="48" fill="none" stroke="#00c853" strokeWidth="2.5">
+                      <circle cx="12" cy="12" r="10" />
+                      <path d="M8 12l3 3 5-5" />
+                    </svg>
+                  </div>
+                  <h2 className={styles.verificationTitle} style={{ color: "#00c853" }}>Transfer Successful</h2>
+                  <p className={styles.verificationDesc}>RM {amountValue} has been sent to {resolvedName}.</p>
+                  <button
+                    className={styles.successDismissBtn}
+                    onClick={() => {
+                      setTxStatus(null);
+                      setAmountValue("");
+                      setScreen("home");
+                      setPhoneInput("");
+                      setResolvedName("");
+                      setShowLimitError(false);
+                    }}
+                  >
+                    Done
+                  </button>
+                </div>
+              </div>
+            )}
+
+            {txStatus === "ERROR" && (
+              <div className={styles.verificationOverlay}>
+                <div className={styles.verificationCard}>
+                  <div className={styles.errorIconWrap}>
+                    <svg viewBox="0 0 24 24" width="48" height="48" fill="none" stroke="#d32f2f" strokeWidth="2.5">
+                      <circle cx="12" cy="12" r="10" />
+                      <path d="M8 8l8 8M16 8l-8 8" />
+                    </svg>
+                  </div>
+                  <h2 className={styles.verificationTitle} style={{ color: "#d32f2f" }}>Verification Failed</h2>
+                  <p className={styles.verificationDesc}>{txError || "Unable to verify this transaction. Please try again."}</p>
+                  <button
+                    className={styles.verificationDismissBtn}
+                    onClick={() => {
+                      setTxStatus(null);
+                      setTxError(null);
+                    }}
+                  >
+                    Try Again
+                  </button>
+                </div>
+              </div>
+            )}
           </div>
         </div>
       </>
