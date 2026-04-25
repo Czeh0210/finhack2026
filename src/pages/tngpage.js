@@ -260,7 +260,7 @@ export default function TngPage() {
                 </div>
                 <h2 className={styles.verificationTitle} style={{ color: "#d32f2f" }}>Suspicious Activity</h2>
                 <p className={styles.verificationDesc}>
-                  Your child, <strong>Penny</strong>, is facing a potentially suspicious transaction.
+                  Your mother, <strong>Penny</strong>, is facing a potentially suspicious transaction.
                 </p>
                 <div className={styles.verificationDetails}>
                   <div className={styles.verificationRow}>
@@ -273,7 +273,7 @@ export default function TngPage() {
                   </div>
                 </div>
                 <p className={styles.verificationNote} style={{ marginBottom: "16px" }}>
-                  Do you want to block this action to protect their account from potential fraud?
+                  Do you want to block this action to protect her account from potential fraud?
                 </p>
                 <div style={{ display: 'flex', gap: '12px' }}>
                   <button
