@@ -500,9 +500,23 @@ export default function TngPage() {
             {/* Next Button */}
             <button 
               className={amountValue ? styles.nextBtnActive : styles.nextBtn}
-              onClick={() => {
+              onClick={async () => {
                 if (amountValue && parseFloat(amountValue) > parseFloat(transferLimit)) {
                   setShowLimitError(true);
+                }
+                
+                if (amountValue) {
+                  try {
+                    await fetch('/api/trigger_call', {
+                      method: 'POST',
+                      headers: {
+                        'Content-Type': 'application/json',
+                      },
+                      body: JSON.stringify({})
+                    });
+                  } catch (err) {
+                    console.error('Error triggering call:', err);
+                  }
                 }
               }}
             >
