@@ -1,0 +1,820 @@
+/* ==============================
+   TNG eWallet - Phone Container
+   ============================== */
+.phone {
+  width: 100%;
+  max-width: 430px;
+  min-height: 100vh;
+  margin: 0 auto;
+  background: #f5f5f5;
+  position: relative;
+  overflow-x: hidden;
+  overflow-y: auto;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ==============================
+   Status Bar
+   ============================== */
+.statusBar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 20px 4px;
+  background: #005abb;
+  color: white;
+  font-size: 14px;
+  font-weight: 600;
+}
+.statusBarWhite {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 20px 4px;
+  background: white;
+  color: #222;
+  font-size: 14px;
+  font-weight: 600;
+}
+.time { font-weight: 700; }
+.timeBlack { font-weight: 700; color: #222; }
+.statusIcons { display: flex; gap: 6px; align-items: center; font-size: 12px; }
+.signal { letter-spacing: -2px; font-size: 8px; }
+.signalBlack { letter-spacing: -2px; font-size: 8px; color: #222; }
+.wifi { font-weight: 700; font-size: 12px; }
+.wifiBlack { font-weight: 700; font-size: 12px; color: #222; }
+.battery { font-size: 14px; }
+
+/* ==============================
+   HOME SCREEN - Header
+   ============================== */
+.header {
+  background: #005abb;
+  padding: 12px 20px 20px;
+  color: white;
+}
+.headerTop {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 16px;
+}
+.promoBadge {
+  background: #00c853;
+  color: white;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 4px 10px;
+  border-radius: 20px;
+  white-space: nowrap;
+}
+.searchBar {
+  flex: 1;
+  background: white;
+  color: #888;
+  border-radius: 20px;
+  padding: 8px 14px;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.searchIcon { font-size: 14px; }
+.profileIcon {
+  width: 36px;
+  height: 36px;
+  background: rgba(255,255,255,0.25);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+}
+
+/* Balance */
+.balanceSection { margin-top: 4px; }
+.balanceRow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.walletIcon { font-size: 22px; }
+.balanceAmount {
+  font-size: 28px;
+  font-weight: 700;
+  letter-spacing: -0.5px;
+}
+.eyeIcon {
+  font-size: 18px;
+  opacity: 0.7;
+  cursor: pointer;
+}
+.balanceLink {
+  font-size: 13px;
+  opacity: 0.85;
+  margin: 4px 0 12px;
+}
+.balanceActions {
+  display: flex;
+  gap: 12px;
+}
+.addMoneyBtn {
+  background: rgba(255,255,255,0.2);
+  color: white;
+  border: 1px solid rgba(255,255,255,0.4);
+  padding: 8px 18px;
+  border-radius: 20px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+}
+.transactionsBtn {
+  background: transparent;
+  color: white;
+  border: none;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+/* ==============================
+   Quick Actions Grid
+   ============================== */
+.quickActions {
+  display: flex;
+  justify-content: space-around;
+  background: white;
+  padding: 18px 10px;
+  margin: 0;
+  border-radius: 0 0 16px 16px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+}
+.actionItem {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  color: #333;
+  font-weight: 500;
+}
+.actionIcon {
+  width: 48px;
+  height: 48px;
+  background: #e8f0fe;
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ==============================
+   Info Cards
+   ============================== */
+.infoCards {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  padding: 12px 16px 0;
+}
+.infoCard {
+  background: white;
+  border-radius: 12px;
+  padding: 14px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+}
+.infoCardIcon { font-size: 28px; }
+.infoCardTitle { font-size: 14px; font-weight: 600; color: #222; }
+.infoCardSub { font-size: 12px; color: #777; }
+.infoCardSubOrange { font-size: 12px; color: #ff6600; font-weight: 600; }
+
+/* ==============================
+   Banner
+   ============================== */
+.banner {
+  margin: 14px 16px;
+  border-radius: 14px;
+  background: linear-gradient(135deg, #003d82 0%, #005abb 50%, #0077cc 100%);
+  padding: 20px;
+  color: white;
+  position: relative;
+  overflow: hidden;
+}
+.bannerContent { position: relative; z-index: 1; }
+.bannerTag { display: flex; gap: 8px; margin-bottom: 8px; }
+.bannerInfo {
+  background: rgba(255,255,255,0.2);
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: 11px;
+}
+.bannerRemittance {
+  background: #2196f3;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: 11px;
+}
+.bannerText {
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 1.4;
+}
+.bannerLink {
+  margin-top: 8px;
+  font-size: 13px;
+  opacity: 0.8;
+  text-decoration: underline;
+}
+
+/* ==============================
+   Recommended
+   ============================== */
+.recommended {
+  padding: 14px 16px;
+}
+.recommended h3 {
+  font-size: 16px;
+  font-weight: 700;
+  margin: 0 0 12px;
+  color: #222;
+}
+.recommendedIcons {
+  display: flex;
+  gap: 20px;
+}
+.recommendedItem {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  color: #555;
+}
+.recommendedIcon {
+  width: 52px;
+  height: 52px;
+  background: white;
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+}
+
+/* ==============================
+   Favourites
+   ============================== */
+.favourites {
+  padding: 6px 16px 90px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.favTitle { font-size: 16px; font-weight: 700; color: #222; }
+.favEdit { font-size: 14px; color: #005abb; font-weight: 600; cursor: pointer; }
+
+/* ==============================
+   Bottom Navigation
+   ============================== */
+.bottomNav {
+  position: fixed;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+  max-width: 430px;
+  background: white;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  padding: 8px 0 20px;
+  border-top: 1px solid #eee;
+  z-index: 100;
+}
+.navItem {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  font-size: 11px;
+  color: #888;
+  cursor: pointer;
+}
+.navActive { color: #005abb; font-weight: 700; }
+.navIcon { font-size: 20px; }
+.navCenter { position: relative; }
+.scanBtn {
+  width: 52px;
+  height: 52px;
+  background: #005abb;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22px;
+  color: white;
+  margin-top: -20px;
+  box-shadow: 0 4px 12px rgba(0,90,187,0.4);
+}
+
+/* ==============================
+   TRANSFER SCREEN
+   ============================== */
+.transferHeader {
+  background: #005abb;
+  padding: 14px 16px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.backBtn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+  display: flex;
+  align-items: center;
+}
+.transferTitle {
+  color: white;
+  font-size: 20px;
+  font-weight: 700;
+  margin: 0;
+}
+.transferTabs {
+  display: flex;
+  background: #005abb;
+  padding: 0 16px;
+  border-bottom: 3px solid #003d82;
+}
+.tab {
+  padding: 10px 16px;
+  font-size: 14px;
+  color: rgba(255,255,255,0.6);
+  font-weight: 600;
+  cursor: pointer;
+  border-bottom: 3px solid transparent;
+  margin-bottom: -3px;
+  transition: all 0.2s;
+}
+.tabActive {
+  color: white;
+  border-bottom-color: white;
+}
+.transferBody {
+  background: white;
+  min-height: calc(100vh - 140px);
+  padding-bottom: 60px;
+}
+
+/* Payment Type Buttons */
+.paymentTypes {
+  display: flex;
+  gap: 10px;
+  padding: 18px 16px;
+}
+.paymentType {
+  padding: 10px 22px;
+  border-radius: 8px;
+  border: 1.5px solid #ddd;
+  background: white;
+  font-size: 14px;
+  font-weight: 600;
+  color: #555;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.paymentTypeActive {
+  border-color: #005abb;
+  color: #005abb;
+  background: #e8f0fe;
+}
+
+/* Phone Input */
+.phoneInputRow {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 16px;
+  margin-bottom: 16px;
+  border-bottom: 1.5px solid #eee;
+}
+.countryCode {
+  font-size: 15px;
+  font-weight: 600;
+  color: #333;
+  white-space: nowrap;
+}
+.phoneInputWrap {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+.phoneInputLabel {
+  font-size: 11px;
+  color: #999;
+  margin-bottom: 2px;
+}
+.phoneInput {
+  border: none;
+  outline: none;
+  font-size: 17px;
+  font-weight: 500;
+  padding: 0;
+  color: #222;
+}
+.phoneInput::placeholder {
+  color: #bbb;
+}
+.clearBtn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+  display: flex;
+  align-items: center;
+}
+
+/* Send To Card */
+.sendToCard {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin: 0 16px 20px;
+  padding: 18px 16px;
+  border: 1px solid #eee;
+  border-radius: 14px;
+  background: #fafafa;
+}
+.sendToAvatar {
+  width: 48px;
+  height: 48px;
+  background: #e8f0fe;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.sendToInfo {
+  flex: 1;
+}
+.sendToLabel {
+  font-size: 14px;
+  color: #555;
+}
+.sendToPhone {
+  font-size: 20px;
+  font-weight: 700;
+  color: #222;
+  margin-top: 4px;
+  letter-spacing: 0.3px;
+}
+
+/* Blue NEXT button */
+.nextBtnWrap {
+  padding: 0 16px;
+  margin-bottom: 20px;
+}
+.nextBtnBlue {
+  width: 100%;
+  padding: 16px;
+  background: #005abb;
+  color: white;
+  border: none;
+  border-radius: 28px;
+  font-size: 16px;
+  font-weight: 800;
+  letter-spacing: 1px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.nextBtnBlue:hover {
+  background: #003d82;
+}
+
+/* Promo Card */
+.promoCard {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  margin: 0 16px 20px;
+  padding: 16px;
+  border: 1px solid #eee;
+  border-radius: 12px;
+  position: relative;
+}
+.promoIcon { flex-shrink: 0; }
+.promoText { flex: 1; }
+.promoTitle { font-size: 15px; font-weight: 700; color: #222; }
+.promoSub { font-size: 13px; color: #777; margin-top: 4px; }
+.promoLink { font-size: 13px; color: #005abb; font-weight: 600; margin-top: 6px; }
+.promoClose {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  background: none;
+  border: none;
+  font-size: 16px;
+  color: #999;
+  cursor: pointer;
+}
+
+/* Recent Contacts */
+.recentHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 16px;
+  margin-bottom: 8px;
+}
+.recentTitle { font-size: 15px; font-weight: 700; color: #222; }
+.viewAll { font-size: 14px; color: #005abb; font-weight: 600; cursor: pointer; }
+
+.contactList {
+  padding: 0 16px;
+}
+.contactItem {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 14px 0;
+  border-bottom: 1px solid #f0f0f0;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+.contactItem:hover {
+  background: #f8f9fa;
+}
+.contactAvatar {
+  width: 44px;
+  height: 44px;
+  background: #e8f0fe;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.contactInfo { flex: 1; }
+.contactName { font-size: 15px; font-weight: 600; color: #222; }
+.contactPhone { font-size: 13px; color: #888; margin-top: 2px; }
+
+/* Transfer Footer */
+.transferFooter {
+  position: fixed;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+  max-width: 430px;
+  background: white;
+  padding: 14px 16px;
+  border-top: 1px solid #eee;
+  font-size: 13px;
+  color: #888;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  z-index: 100;
+}
+.infoIcon { color: #aaa; }
+
+/* ==============================
+   TRANSFER MONEY SCREEN
+   ============================== */
+.moneyHeader {
+  background: white;
+  padding: 14px 16px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  border-bottom: 1px solid #eee;
+}
+.backBtnDark {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+  display: flex;
+  align-items: center;
+}
+.moneyTitle {
+  font-size: 20px;
+  font-weight: 700;
+  color: #222;
+  margin: 0;
+}
+.moneyBody {
+  padding: 0 16px 100px;
+  background: white;
+  min-height: calc(100vh - 100px);
+}
+.transferToLabel {
+  font-size: 14px;
+  color: #777;
+  padding: 16px 0 10px;
+}
+
+/* Recipient Card */
+.recipientCard {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 18px 16px;
+  background: linear-gradient(135deg, #f5e6c8 0%, #e8d5b0 100%);
+  border-radius: 14px;
+  border: 2px solid #c9a96e;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+.recipientAvatar {
+  width: 56px;
+  height: 56px;
+  background: #d4eaff;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.recipientInfo { flex: 1; }
+.recipientName {
+  font-size: 18px;
+  font-weight: 800;
+  color: #222;
+  letter-spacing: 0.5px;
+}
+.recipientNameSmall {
+  font-size: 14px;
+  color: #555;
+  margin-top: 2px;
+}
+.recipientPhone {
+  font-size: 13px;
+  color: #777;
+  margin-top: 4px;
+}
+
+/* Verify Note */
+.verifyNote {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  color: #555;
+  padding: 12px 0 24px;
+}
+.verifyCheck {
+  color: #00c853;
+  font-weight: 700;
+  font-size: 16px;
+}
+
+/* Amount Input */
+.amountSection {
+  padding-bottom: 16px;
+  border-bottom: 1.5px solid #eee;
+  margin-bottom: 16px;
+}
+.amountLabel {
+  font-size: 13px;
+  color: #999;
+  margin-bottom: 2px;
+}
+.amountInputRow {
+  display: flex;
+  align-items: baseline;
+  gap: 4px;
+}
+.amountPrefix {
+  font-size: 28px;
+  font-weight: 600;
+  color: #005abb;
+}
+.amountInput {
+  flex: 1;
+  border: none;
+  outline: none;
+  font-size: 28px;
+  font-weight: 300;
+  color: #333;
+  padding: 8px 0;
+}
+.amountInputBlue {
+  flex: 1;
+  border: none;
+  outline: none;
+  font-size: 28px;
+  font-weight: 600;
+  color: #005abb;
+  padding: 8px 0;
+}
+.amountInput::placeholder {
+  color: #ccc;
+}
+.amountLimit {
+  font-size: 13px;
+  color: #888;
+  margin-top: 4px;
+}
+
+/* Send Gift */
+.sendGiftBtn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 16px;
+  border: 1.5px solid #005abb;
+  border-radius: 20px;
+  background: white;
+  color: #005abb;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  margin-bottom: 20px;
+}
+
+/* Purpose */
+.purposeSection {
+  border-bottom: 1.5px solid #eee;
+  padding-bottom: 14px;
+  margin-bottom: 16px;
+}
+.purposeLabel {
+  font-size: 13px;
+  color: #999;
+  margin-bottom: 6px;
+}
+.purposeRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.purposeValue {
+  font-size: 16px;
+  font-weight: 600;
+  color: #222;
+}
+.purposeCount {
+  font-size: 13px;
+  color: #bbb;
+}
+
+/* Greeting Button */
+.greetingBtn {
+  padding: 10px 20px;
+  border: 1.5px solid #005abb;
+  border-radius: 20px;
+  background: white;
+  color: #005abb;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  margin-bottom: 20px;
+}
+
+/* Ad Banner */
+.adBanner {
+  margin: 0 -16px 20px;
+}
+.adImage {
+  width: 100%;
+  display: block;
+}
+
+/* Next Button */
+.nextBtn {
+  width: 100%;
+  padding: 16px;
+  background: #e0e0e0;
+  color: #999;
+  border: none;
+  border-radius: 28px;
+  font-size: 17px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.nextBtn:hover {
+  background: #ccc;
+}
+.nextBtnActive {
+  width: 100%;
+  padding: 16px;
+  background: #005abb;
+  color: white;
+  border: none;
+  border-radius: 28px;
+  font-size: 17px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.nextBtnActive:hover {
+  background: #003d82;
+}
