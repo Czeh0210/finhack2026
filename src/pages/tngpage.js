@@ -546,14 +546,7 @@ export default function TngPage() {
             {/* Pick Greeting */}
             <button className={styles.greetingBtn}>Pick a Greeting</button>
 
-            {/* Ad Banner */}
-            <div className={styles.adBanner}>
-              <img
-                src="/kdk_fan_ad.png"
-                alt="KDK Ceiling Fan Advertisement"
-                className={styles.adImage}
-              />
-            </div>
+
 
             {/* Next Button */}
             <button 
