@@ -29,8 +29,8 @@ export default async function handler(req, res) {
         },
         body: JSON.stringify({
           agent_id: process.env.ELEVENLABS_AGENT_ID,
-          to_number: phoneNumber || "+60103604883",
-          agent_phone_number_id: "phnum_9101kq2jqavdfhstxn069gz50s43"
+          to_number: phoneNumber || "+1234567890", // Fallback phone number for testing
+          agent_phone_number_id: process.env.AGENT_PHONE_NUMBER_ID
         }),
       }
     );
